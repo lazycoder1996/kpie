@@ -5,6 +5,7 @@ class MyTextField extends StatelessWidget {
   final TextEditingController controller;
   final Widget? prefixIcon;
   final String labelText;
+  final String? Function(String?)? validator;
   final EdgeInsetsGeometry? padding;
   const MyTextField({
     Key? key,
@@ -12,6 +13,7 @@ class MyTextField extends StatelessWidget {
     required this.labelText,
     this.padding,
     this.prefixIcon,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,8 @@ class MyTextField extends StatelessWidget {
       padding: padding ?? const EdgeInsets.all(20),
       child: TextFormField(
         controller: controller,
+        validator: validator,
+        onChanged: (val) {},
         decoration: InputDecoration(
           labelText: labelText,
           prefixIcon: prefixIcon,
