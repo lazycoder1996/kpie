@@ -143,6 +143,11 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               onPressed: () async {
+                                formKey.currentState!.reset();
+                                setState(() {
+                                  userError = false;
+                                  passError = false;
+                                });
                                 showDialog(
                                     barrierDismissible: false,
                                     context: context,
@@ -162,18 +167,20 @@ class _LoginPageState extends State<LoginPage> {
                                     Navigator.pop(context);
                                     toNextScreen(context, const HomePage());
                                   } else {
+                                    Navigator.pop(context);
                                     // show error message
-                                    var res = value['status'];
+                                    var res = value['response'];
                                     if (res['error_text'] ==
                                         'Password is incorrect') {
+                                      print('true');
                                       setState(() {
-                                        userError = true;
+                                        passError = true;
                                         formKey.currentState!.validate();
                                       });
                                     } else if (res['error_text'] ==
                                         'Username not found') {
                                       setState(() {
-                                        passError = true;
+                                        userError = true;
                                         formKey.currentState!.validate();
                                       });
                                     }
