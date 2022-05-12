@@ -10,17 +10,23 @@ class Config {
 class ApiConfig {
   static Future<Map<String, dynamic>> postItem(
       Map<String, String> bodyData) async {
-    String accessToken = SharedPrefs.getToken();
+    String accessToken = '';
+    await SharedPrefs.getToken().then((value) {
+      accessToken = value!;
+      print(accessToken);
+    });
     String postUrl = Config.baseUrl + "/api/new_post?access_token=$accessToken";
     Uri url = Uri.parse(postUrl);
     var req = http.MultipartRequest('POST', url);
     bodyData['server_key'] = Config.serverKey;
     req.fields.addAll(bodyData);
-
+    print(bodyData);
+    print(req.url);
     var res = await req.send();
     String resBody = await res.stream.bytesToString();
     Map<String, dynamic> body = json.decode(resBody);
     int? code = int.tryParse(body['api_status'].toString());
+    print(resBody);
     if (code! >= 200 && code < 300) {
       return {
         'response': resBody,
@@ -53,7 +59,9 @@ class ApiConfig {
     String resBody = await res.stream.bytesToString();
     Map<String, dynamic> body = json.decode(resBody);
     int? code = int.tryParse(body['api_status'].toString());
+    print(body);
     if (code! >= 200 && code < 300) {
+      print(body['access_token']);
       await SharedPrefs.saveToken(body["access_token"]);
       return {
         'response': resBody,

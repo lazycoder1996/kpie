@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                                           const SnackBar(
                                             content: Text('Uploading content'),
                                             duration:
-                                                Duration(milliseconds: 100),
+                                                Duration(milliseconds: 800),
                                           ),
                                         );
                                         await ApiConfig.postItem({
@@ -80,9 +80,9 @@ class _HomePageState extends State<HomePage> {
                                                 .showSnackBar(
                                               const SnackBar(
                                                 content:
-                                                    Text('Upload successfull'),
+                                                    Text('Upload successful'),
                                                 duration:
-                                                    Duration(milliseconds: 100),
+                                                    Duration(milliseconds: 800),
                                               ),
                                             );
                                           } else {
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                                                 content: Text(
                                                     'Failed uploading content'),
                                                 duration:
-                                                    Duration(milliseconds: 100),
+                                                    Duration(milliseconds: 800),
                                               ),
                                             );
                                           }
