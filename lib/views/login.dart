@@ -20,6 +20,17 @@ class _LoginPageState extends State<LoginPage> {
   bool userError = false;
   bool passError = false;
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    formKey.currentState!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -143,7 +154,6 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               onPressed: () async {
-                                formKey.currentState!.reset();
                                 setState(() {
                                   userError = false;
                                   passError = false;
@@ -164,6 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ).then((value) {
                                   if (value['status']) {
                                     // move to next page
+                                    formKey.currentState!.validate();
                                     Navigator.pop(context);
                                     toNextScreen(context, const HomePage());
                                   } else {
@@ -172,7 +183,6 @@ class _LoginPageState extends State<LoginPage> {
                                     var res = value['response'];
                                     if (res['error_text'] ==
                                         'Password is incorrect') {
-                                      print('true');
                                       setState(() {
                                         passError = true;
                                         formKey.currentState!.validate();

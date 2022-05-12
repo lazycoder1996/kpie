@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kpie/utils/config.dart';
 import 'package:kpie/widgets/textfield.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,10 +13,10 @@ class _HomePageState extends State<HomePage> {
   TextEditingController search = TextEditingController();
   GlobalKey<ScaffoldState> key = GlobalKey();
   Map<String, dynamic> postItems = {
-    'Post Text': Icons.person,
-    'Post Color': Icons.security,
-    'Event id': Icons.lock,
-    'Post Privacy': Icons.help,
+    'Post Text': [Icons.person, 'postText'],
+    'Post Color': [Icons.security, 'post_color'],
+    'Event id': [Icons.lock, 'event_id'],
+    'Post Privacy': [Icons.help, 'postPrivacy'],
   };
   @override
   void initState() {
@@ -62,9 +63,44 @@ class _HomePageState extends State<HomePage> {
                                 return Column(
                                   children: [
                                     GestureDetector(
+                                      onTap: () async {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Uploading content'),
+                                            duration:
+                                                Duration(milliseconds: 100),
+                                          ),
+                                        );
+                                        await ApiConfig.postItem({
+                                          pV[1]: 'hello',
+                                        }).then((value) {
+                                          if (value['status']) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content:
+                                                    Text('Upload successfull'),
+                                                duration:
+                                                    Duration(milliseconds: 100),
+                                              ),
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Failed uploading content'),
+                                                duration:
+                                                    Duration(milliseconds: 100),
+                                              ),
+                                            );
+                                          }
+                                        });
+                                      },
                                       child: CircleAvatar(
                                         radius: 20,
-                                        child: Icon(pV),
+                                        child: Icon(pV[0]),
                                       ),
                                     ),
                                     const SizedBox(height: 5),
